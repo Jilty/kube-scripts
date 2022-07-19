@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^/app-name(/|$)(.*) /$2 break;
+  name: rtf-ingress-template
+  namespace: rtf
+spec:
+  ingressClassName: rtf-nginx
+  rules:
+  - host: rtf.example.com
+    http:
+      paths:
+      - path: /app-name
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: service
+            port:
+              number: 80
